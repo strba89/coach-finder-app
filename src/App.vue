@@ -1,26 +1,45 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <TheHeader/>
+  <main>
+    <router-view :hasData="hasData"></router-view>
+  </main>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TheHeader from './components/layout/TheHeader.comonent'
+import {mapActions} from 'vuex'
 export default {
   name: 'App',
+  data(){
+    return{
+      hasData: false
+    }
+  },
   components: {
-    HelloWorld
+    TheHeader,
+  },
+  methods:{
+    ...mapActions(['bindCoachesRef'])
+  },
+  async mounted() {
+    try {
+      await this.bindCoachesRef()
+      this.hasData = true
+    }catch (err){
+      err? console.log(err): ''
+    }
   }
 }
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
 }
 </style>
